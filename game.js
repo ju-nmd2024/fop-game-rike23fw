@@ -3,6 +3,9 @@ let frogX = 300; // Initial position on X
 let frogY = 250; // Initial position on Y
 let frogColor = color(30, 130, 30);
 let lilyColor = color(30, 80, 30);
+let darkBlue = color(10, 150, 250);
+let lightBlue = color(120, 190, 255);
+
 let frogSpeed = 2; // Frog's speed
 const bottomLimit = 430; // Limit where the frog stops
 const lilyPadY = 400; // Fixed position for the lilypad
@@ -10,8 +13,6 @@ let gameState = 'start';
 
 function setup() {
     createCanvas(800, 600);
-    strokeWeight(2);
-    background(150, 220, 255);
 }
 
 function draw() {
@@ -25,19 +26,64 @@ function draw() {
   }
 
 function startScreen() {
-    stroke(10, 150, 250);
+    background(150, 220, 255);
+
+    //Start screen texts
+    stroke(darkBlue);
     strokeWeight(3);
-    fill(120, 190, 255);
+    fill(lightBlue);
     textSize(25);
-    text('Game start', 260, 300);
+    text('Start game', 350, 250);
+    text('Click', 345, 300 + 30);
+    text('or', 400, 300 + 60);
+    text('Press SPACE to continue', 270, 300 + 90);
+
+    // Draw the button
+    stroke(darkBlue);
+    strokeWeight(3);
+    fill(frogColor);
+    rect(410, 304, 75, 35, 5);
+
+    //Start button
+    stroke(darkBlue);
+    strokeWeight(3);
+    fill(lightBlue);
+    text('HERE', 412, 300 + 30);
+
 } 
 
+function mousePressed() {
+
+    if (gameState === 'start') {
+        //Start screen button
+        let buttonX = 410;
+        let buttonY = 304;
+        let buttonWidth = 75;
+        let buttonHeight = 35;
+
+        if (mouseX > buttonX && mouseX < buttonX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
+            gameState = 'game';
+        }
+
+    } else if (gameState === 'result') {
+        //Result screen button
+        let buttonX = 253;
+        let buttonY = 391; 
+        let buttonWidth = 150;
+        let buttonHeight = 35;
+
+        if (mouseX > buttonX && mouseX < buttonX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
+            gameState = 'start';
+        }
+    }
+}
 
 
 function gameScreen() {
     clear(); // clears the path left when the frog moves
-    background(150, 220, 255);
-    
+    stroke(0);
+    background(150, 220, 255); //Sky
+
     // Draw the lilypad at the fixed position
     drawLilyPad(300, lilyPadY);
 
@@ -102,15 +148,38 @@ function drawFrog(frogX, frogY) {
     ellipse(0, 10, 30, 100);
     pop();
     ellipse(frogX - 40, frogY + 60, 30, 10);
+
+    // You win when the frog lands safely on the lilypad
+    if (frogY >= bottomLimit) {
+    gameState = 'result';
+  }
+
+
 }
 
 function resultScreen() {
-    stroke(lilyColor);
+    clear();
+    background(150, 220, 255);
+    stroke(250);
     strokeWeight(3);
     fill(frogColor);
     textSize(25);
     text('Game over !', 260, 300);
-    text('The frog landed safely', 260 - 50, 300 +30);
+    text('The frog landed safely', 210, 380);
+    text('Press            to play again', 185, 415);
+
+     // Draw the button
+     stroke(darkBlue);
+     strokeWeight(3);
+     fill(150, 220, 255);
+     rect(253, 391, 75, 30, 5);
+ 
+     //Start button
+     stroke(darkBlue);
+     strokeWeight(3);
+     fill(lightBlue);
+     text('HERE', 255, 415);
+
 } 
 
 
