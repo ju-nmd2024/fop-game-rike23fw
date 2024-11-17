@@ -6,7 +6,7 @@ let lilyColor = color(30, 80, 30);
 let frogSpeed = 2; // Frog's speed
 const bottomLimit = 430; // Limit where the frog stops
 const lilyPadY = 400; // Fixed position for the lilypad
-let gameState = 'game';
+let gameState = 'start';
 
 function setup() {
     createCanvas(800, 600);
@@ -14,8 +14,27 @@ function setup() {
     background(150, 220, 255);
 }
 
-
 function draw() {
+    if (gameState === 'start') {
+      startScreen();
+    } else if (gameState === "game") {
+      gameScreen();
+    } else if (gameState === "result") {
+      resultScreen();
+    }
+  }
+
+function startScreen() {
+    stroke(10, 150, 250);
+    strokeWeight(3);
+    fill(120, 190, 255);
+    textSize(25);
+    text('Game start', 260, 300);
+} 
+
+
+
+function gameScreen() {
     clear(); // clears the path left when the frog moves
     background(150, 220, 255);
     
@@ -84,3 +103,15 @@ function drawFrog(frogX, frogY) {
     pop();
     ellipse(frogX - 40, frogY + 60, 30, 10);
 }
+
+function resultScreen() {
+    stroke(lilyColor);
+    strokeWeight(3);
+    fill(frogColor);
+    textSize(25);
+    text('Game over !', 260, 300);
+    text('The frog landed safely', 260 - 50, 300 +30);
+} 
+
+
+
