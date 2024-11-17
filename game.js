@@ -5,11 +5,13 @@ let frogColor = color(30, 130, 30);
 let lilyColor = color(30, 80, 30);
 let darkBlue = color(10, 150, 250);
 let lightBlue = color(120, 190, 255);
+const bottomLimit = 510; // Limit where the frog stops
+const lilyPadY = 480; // Fixed position for the lilypad
 
-let frogSpeed = 2; // Frog's speed
-const bottomLimit = 430; // Limit where the frog stops
-const lilyPadY = 400; // Fixed position for the lilypad
-let gameState = 'start';
+// game logic variables
+let acceleration = 0.2;
+let frogSpeed = 5; // Frog's speed
+let gameState = 'game';
 
 function setup() {
     createCanvas(800, 600);
@@ -41,11 +43,11 @@ function startScreen() {
     // Draw the button
     stroke(darkBlue);
     strokeWeight(3);
-    fill(frogColor);
+    fill(150, 220, 255);
     rect(410, 304, 75, 35, 5);
 
     //Start button
-    stroke(darkBlue);
+    stroke(250);
     strokeWeight(3);
     fill(lightBlue);
     text('HERE', 412, 300 + 30);
@@ -101,13 +103,23 @@ function gameScreen() {
 
 // Draws the lilypad
 function drawLilyPad(x, y) {
+
+    //Lake
+    stroke(darkBlue);
+    strokeWeight(2);
+    fill(lightBlue);
+    rect(0, 390, 800, 300);
+
+    //Lilypad
+    stroke(0);
     fill(lilyColor);
-    arc(x, y + 80, 400, 65, 30, PI + HALF_PI);
+    arc(x, y + 75, 300, 65, 30, PI + HALF_PI);
 }
 
 // Draws the frog
 function drawFrog(frogX, frogY) {
     // Body
+    stroke(0);
     fill(frogColor);
     strokeWeight(2);
     ellipse(frogX, frogY + 10, 150, 100);
@@ -149,11 +161,16 @@ function drawFrog(frogX, frogY) {
     pop();
     ellipse(frogX - 40, frogY + 60, 30, 10);
 
-    // You win when the frog lands safely on the lilypad
-    if (frogY >= bottomLimit) {
-    gameState = 'result';
-  }
+    if (keyCode === UP_ARROW) {
+        // Apply upward force to slow down the descent
+        frogSpeed += acceleration;
+    }
 
+    // You win when the frog lands safely on the lilypad
+if (frogY >= bottomLimit) {
+    frogSpeed = 0; // Stop movement
+    //gameState = 'result'; ///////////REMEMBER TO USE THIS ONE/////////////
+}
 
 }
 
@@ -168,19 +185,21 @@ function resultScreen() {
     text('The frog landed safely', 210, 380);
     text('Press            to play again', 185, 415);
 
-     // Draw the button
-     stroke(darkBlue);
-     strokeWeight(3);
-     fill(150, 220, 255);
-     rect(253, 391, 75, 30, 5);
+    // Draw the button
+    stroke(darkBlue);
+    strokeWeight(3);
+    fill(150, 220, 255);
+    rect(253, 391, 75, 30, 5);
  
-     //Start button
-     stroke(darkBlue);
-     strokeWeight(3);
-     fill(lightBlue);
-     text('HERE', 255, 415);
+    //Start button
+    stroke(darkBlue);
+    strokeWeight(3);
+    fill(lightBlue);
+    text('HERE', 255, 415);
 
 } 
 
 
 
+//References
+//https://p5js.org/reference/p5/keyCode/
