@@ -1,17 +1,17 @@
 // Variables
-let frogX = 300; // Initial position on X
-let frogY = 250; // Initial position on Y
+let frogX = 660; // Initial position on X
+let frogY = 0; // Initial position on Y
 let frogColor = color(30, 130, 30);
 let lilyColor = color(30, 80, 30);
 let darkBlue = color(10, 150, 250);
 let lightBlue = color(120, 190, 255);
 const bottomLimit = 510; // Limit where the frog stops
 const lilyPadY = 480; // Fixed position for the lilypad
-
+ 
 // game logic variables
-let acceleration = 0.2;
-let frogSpeed = 5; // Frog's speed
-let gameState = 'game';
+let acceleration = -0.1;
+let frogSpeed = 4; // Frog's speed
+let gameState = 'start';
 
 function setup() {
     createCanvas(800, 600);
@@ -44,8 +44,7 @@ function startScreen() {
     stroke(darkBlue);
     strokeWeight(3);
     fill(150, 220, 255);
-    rect(410, 304, 75, 35, 5);
-
+    rect(410, 304, 75, 35, 5); 
     //Start button
     stroke(250);
     strokeWeight(3);
@@ -55,7 +54,6 @@ function startScreen() {
 } 
 
 function mousePressed() {
-
     if (gameState === 'start') {
         //Start screen button
         let buttonX = 410;
@@ -64,7 +62,7 @@ function mousePressed() {
         let buttonHeight = 35;
 
         if (mouseX > buttonX && mouseX < buttonX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
-            gameState = 'game';
+            startGame();
         }
 
     } else if (gameState === 'result') {
@@ -75,12 +73,22 @@ function mousePressed() {
         let buttonHeight = 35;
 
         if (mouseX > buttonX && mouseX < buttonX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
-            gameState = 'start';
-        }
+            startGame();
+        } 
     }
 }
 
 
+
+function startGame() {
+    frogX = 660;
+    frogY = 0;
+    frogSpeed = 2;
+    gameState = 'game';
+}
+
+
+ 
 function gameScreen() {
     clear(); // clears the path left when the frog moves
     stroke(0);
@@ -90,11 +98,22 @@ function gameScreen() {
     drawLilyPad(300, lilyPadY);
 
     // Make the frog move downwards
-    frogY += frogSpeed;
+    frogY += frogSpeed; 
 
+    if (keyIsDown(LEFT_ARROW)) {
+        frogX -= frogSpeed;
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+        frogX += frogSpeed;
+    }
+    if (keyIsDown(UP_ARROW)) {
+        frogY -= acceleration;
+    }  
+  
+ 
     // Stop the frog when it reaches the bottom limit
     if (frogY >= bottomLimit) {
-        frogSpeed = 0; // Stop movement
+        frogSpeed = 0; 
     }
 
     // Draw the frog in its new position
@@ -162,14 +181,14 @@ function drawFrog(frogX, frogY) {
     ellipse(frogX - 40, frogY + 60, 30, 10);
 
     if (keyCode === UP_ARROW) {
-        // Apply upward force to slow down the descent
+
         frogSpeed += acceleration;
     }
 
     // You win when the frog lands safely on the lilypad
 if (frogY >= bottomLimit) {
-    frogSpeed = 0; // Stop movement
-    //gameState = 'result'; ///////////REMEMBER TO USE THIS ONE/////////////
+    //frogSpeed = 0; // Stop movement
+    gameState = 'result'; ///////////REMEMBER TO USE THIS ONE/////////////
 }
 
 }
@@ -203,3 +222,4 @@ function resultScreen() {
 
 //References
 //https://p5js.org/reference/p5/keyCode/
+//
