@@ -10,9 +10,9 @@ const lilyPadY = 480; // Fixed position for the lilypad
 let lilyPadX = 300;
  
 // game logic variables
-let acceleration = -0.1;
-let frogSpeed = 4; // Frog's speed
-let gameState = 'result';
+let acceleration = 0.2;
+let velocityY = 0.2; // Frog's speed
+let gameState = 'start';
 
 function setup() {
     createCanvas(700, 600);
@@ -29,6 +29,11 @@ function draw() {
   }
 
 function startScreen() {
+
+    frogX = 660;
+    frogY = 0;
+    velocityY = 0.2;
+
     background(150, 220, 255);
 
     //Start screen texts
@@ -37,7 +42,7 @@ function startScreen() {
     fill(lightBlue);
     textSize(25);
     text('Start game', 350, 250);
-    text('Click', 345, 300 + 30);
+    text('Click', 345, 330);
 
     // Draw the button
     stroke(darkBlue);
@@ -48,7 +53,7 @@ function startScreen() {
     stroke(250);
     strokeWeight(3);
     fill(lightBlue);
-    text('HERE', 412, 300 + 30);
+    text('HERE', 412, 330);
 
 } 
 
@@ -61,7 +66,7 @@ function mousePressed() {
         let buttonHeight = 35;
 
         if (mouseX > buttonX && mouseX < buttonX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
-            startGame();
+            gameState = 'game';
         }
 
     } else if (gameState === 'result') {
@@ -72,21 +77,10 @@ function mousePressed() {
         let buttonHeight = 35;
 
         if (mouseX > buttonX && mouseX < buttonX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
-            startGame();
+            gameState = 'start';
         } 
     }
 }
-
-
-
-function startGame() {
-    frogX = 660;
-    frogY = 0;
-    frogSpeed = 4;
-    gameState = 'game';
-}
-
-
  
 function gameScreen() {
     clear(); // clears the path left when the frog moves
@@ -96,27 +90,24 @@ function gameScreen() {
     // Draw the lilypad at the fixed position
     drawLilyPad(300, lilyPadY);
 
-    // Make the frog move downwards
-    frogY += frogSpeed; 
+    // Gravity logic
+    //Reference from Flappy Demo 
+    frogY = frogY + velocityY; 
+    velocityY = velocityY + acceleration;
+ 
+
+    //References
+    //https://p5js.org/reference/p5/keyIsDown/
+    //Constrols to make the frog move
+    if (keyIsDown(UP_ARROW)) {
+         velocityY -= 0.3; //reduces velocity by 0.3 making the landing easier
+    }
 
     if (keyIsDown(LEFT_ARROW)) {
-        frogX -= frogSpeed;
+         frogX -= 2; //Moves to the left
     }
-    if (keyIsDown(RIGHT_ARROW)) {
-        frogX += frogSpeed;
-    }
-    if (keyIsDown(UP_ARROW)) {
-        frogY -= acceleration;
-    }  
-
-    if (keyCode === UP_ARROW) {
-
-        frogSpeed += acceleration;
-    }
-  
-    // Stop the frog when it reaches the bottom limit
-    if (frogY >= bottomLimit) {
-        frogSpeed = 0; 
+    if (keyIsDown(RIGHT_ARROW)) { 
+         frogX += 2; //Moves to the right
     }
 
     // Draw the frog in its new position
@@ -209,7 +200,7 @@ function resultScreen() {
     }
 
 
-    // Draw the button
+    //Draw the button
     stroke(darkBlue);
     strokeWeight(3);
     fill(150, 220, 255);
@@ -222,9 +213,3 @@ function resultScreen() {
     text('HERE', 255, 415);
 
 } 
-
-
-
-//References
-//https://p5js.org/reference/p5/keyCode/
-//
