@@ -44,18 +44,53 @@ function startScreen() {
     text('Start game', 350, 250);
     text('Click', 345, 330);
 
-    // Draw the button
+    //Draw the button
     stroke(darkBlue);
     strokeWeight(3);
     fill(150, 220, 255);
     rect(410, 304, 75, 35, 5); 
+
     //Start button
     stroke(250);
     strokeWeight(3);
     fill(lightBlue);
     text('HERE', 412, 330);
 
-} 
+}
+ 
+function gameScreen() {
+    clear(); // clears the path left when the frog moves
+    stroke(0);
+    background(150, 220, 255); //Sky
+
+    // Draw the lilypad in its position
+    drawLilyPad(300, lilyPadY);
+
+    // Gravity logic
+    //Reference from Flappy Demo 
+    frogY = frogY + velocityY; 
+    velocityY = velocityY + acceleration;
+ 
+
+    //References
+    //https://p5js.org/reference/p5/keyIsDown/
+    //Constrols to make the frog move
+    if (keyIsDown(UP_ARROW)) {
+         velocityY -= 0.3; //reduces velocity by 0.3 making the landing easier
+    }
+
+    if (keyIsDown(LEFT_ARROW)) {
+         frogX -= 2; //Moves to the left
+    }
+    if (keyIsDown(RIGHT_ARROW)) { 
+         frogX += 2; //Moves to the right
+    }
+
+    //Draw the frog in its position
+    drawFrog(frogX, frogY);
+
+}
+
 
 function mousePressed() {
     if (gameState === 'start') {
@@ -81,41 +116,10 @@ function mousePressed() {
         } 
     }
 }
- 
-function gameScreen() {
-    clear(); // clears the path left when the frog moves
-    stroke(0);
-    background(150, 220, 255); //Sky
 
-    // Draw the lilypad at the fixed position
-    drawLilyPad(300, lilyPadY);
 
-    // Gravity logic
-    //Reference from Flappy Demo 
-    frogY = frogY + velocityY; 
-    velocityY = velocityY + acceleration;
- 
 
-    //References
-    //https://p5js.org/reference/p5/keyIsDown/
-    //Constrols to make the frog move
-    if (keyIsDown(UP_ARROW)) {
-         velocityY -= 0.3; //reduces velocity by 0.3 making the landing easier
-    }
-
-    if (keyIsDown(LEFT_ARROW)) {
-         frogX -= 2; //Moves to the left
-    }
-    if (keyIsDown(RIGHT_ARROW)) { 
-         frogX += 2; //Moves to the right
-    }
-
-    // Draw the frog in its new position
-    drawFrog(frogX, frogY);
-
-}
-
-// Draws the lilypad
+//Draws the lilypad
 function drawLilyPad(x, y) {
 
     //Lake
@@ -130,20 +134,20 @@ function drawLilyPad(x, y) {
     arc(x, y + 75, 300, 65, 30, PI + HALF_PI);
 }
 
-// Draws the frog
+//Draws the frog
 function drawFrog(frogX, frogY) {
-    // Body
+    //Body
     stroke(0);
     fill(frogColor);
     strokeWeight(2);
     ellipse(frogX, frogY + 10, 150, 100);
 
-    // Mouth
+    //Mouth
     strokeWeight(2);
     noFill();
     arc(frogX, frogY + 10, 70, 50, 0, PI);
 
-    // Eyes
+    //Eyes
     strokeWeight(1);
     fill(30, 70, 30);
     ellipse(frogX - 35, frogY - 33, 43, 44);
@@ -152,13 +156,13 @@ function drawFrog(frogX, frogY) {
     ellipse(frogX - 35, frogY - 30, 40, 40);
     ellipse(frogX + 35, frogY - 30, 40, 40);
 
-    // Pupils
+    //Pupils
     strokeWeight(1);
     fill(0);
     ellipse(frogX - 35, frogY - 30, 20, 40);
     ellipse(frogX + 35, frogY - 30, 20, 40);
 
-    // Right leg
+    //Right leg
     fill(frogColor);
     push();
     translate(frogX + 40, frogY + 40);
@@ -167,7 +171,7 @@ function drawFrog(frogX, frogY) {
     pop();
     ellipse(frogX + 40, frogY + 60, 30, 10);
 
-    // Left leg
+    //Left leg
     push();
     translate(frogX - 40, frogY + 40);
     rotate(2,7,4,3);
@@ -175,7 +179,7 @@ function drawFrog(frogX, frogY) {
     pop();
     ellipse(frogX - 40, frogY + 60, 30, 10);
 
-    // You win when the frog lands safely on the lilypad
+    //You win when the frog lands safely on the lilypad
 if (frogY >= bottomLimit) {
     gameState = 'result'; 
 }
