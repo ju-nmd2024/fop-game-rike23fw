@@ -7,14 +7,15 @@ let darkBlue = color(10, 150, 250);
 let lightBlue = color(120, 190, 255);
 const bottomLimit = 510; // Limit where the frog stops
 const lilyPadY = 480; // Fixed position for the lilypad
+let lilyPadX = 300;
  
 // game logic variables
 let acceleration = -0.1;
 let frogSpeed = 4; // Frog's speed
-let gameState = 'start';
+let gameState = 'result';
 
 function setup() {
-    createCanvas(800, 600);
+    createCanvas(700, 600);
 }
 
 function draw() {
@@ -37,8 +38,6 @@ function startScreen() {
     textSize(25);
     text('Start game', 350, 250);
     text('Click', 345, 300 + 30);
-    text('or', 400, 300 + 60);
-    text('Press SPACE to continue', 270, 300 + 90);
 
     // Draw the button
     stroke(darkBlue);
@@ -83,7 +82,7 @@ function mousePressed() {
 function startGame() {
     frogX = 660;
     frogY = 0;
-    frogSpeed = 2;
+    frogSpeed = 4;
     gameState = 'game';
 }
 
@@ -109,8 +108,12 @@ function gameScreen() {
     if (keyIsDown(UP_ARROW)) {
         frogY -= acceleration;
     }  
+
+    if (keyCode === UP_ARROW) {
+
+        frogSpeed += acceleration;
+    }
   
- 
     // Stop the frog when it reaches the bottom limit
     if (frogY >= bottomLimit) {
         frogSpeed = 0; 
@@ -118,6 +121,7 @@ function gameScreen() {
 
     // Draw the frog in its new position
     drawFrog(frogX, frogY);
+
 }
 
 // Draws the lilypad
@@ -180,15 +184,9 @@ function drawFrog(frogX, frogY) {
     pop();
     ellipse(frogX - 40, frogY + 60, 30, 10);
 
-    if (keyCode === UP_ARROW) {
-
-        frogSpeed += acceleration;
-    }
-
     // You win when the frog lands safely on the lilypad
 if (frogY >= bottomLimit) {
-    //frogSpeed = 0; // Stop movement
-    gameState = 'result'; ///////////REMEMBER TO USE THIS ONE/////////////
+    gameState = 'result'; 
 }
 
 }
@@ -200,9 +198,16 @@ function resultScreen() {
     strokeWeight(3);
     fill(frogColor);
     textSize(25);
-    text('Game over !', 260, 300);
-    text('The frog landed safely', 210, 380);
-    text('Press            to play again', 185, 415);
+    if (frogX > lilyPadX - 150 && frogX < lilyPadX + 150) {
+        text('You Won !', 260, 300);
+        text('The frog landed safely on the lilypad', 110, 380);
+        text('Press            to play again', 185, 415);
+    } else {
+        text('You Lost!', 280, 300);
+        text('The frog fell into the lake', 200, 380);
+        text('Press            to play again', 185, 415);
+    }
+
 
     // Draw the button
     stroke(darkBlue);
