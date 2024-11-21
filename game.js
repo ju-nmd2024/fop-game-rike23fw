@@ -12,14 +12,14 @@ let lilyPadX = 300;
 // game logic variables
 let acceleration = 0.2;
 let velocityY = 0.2; // Frog's speed
-let gameState = 'start';
+let gameState = true;
 
 function setup() {
     createCanvas(700, 600);
 }
 
 function draw() {
-    if (gameState === 'start') {
+    if (gameState === true) {
       startScreen();
     } else if (gameState === "game") {
       gameScreen();
@@ -93,7 +93,7 @@ function gameScreen() {
 
 
 function mousePressed() {
-    if (gameState === 'start') {
+    if (gameState === true) {
         //Start screen button
         let buttonX = 410;
         let buttonY = 304;
@@ -112,7 +112,7 @@ function mousePressed() {
         let buttonHeight = 35;
 
         if (mouseX > buttonX && mouseX < buttonX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
-            gameState = 'start';
+            gameState = true;
         } 
     }
 }
