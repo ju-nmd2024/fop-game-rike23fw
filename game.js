@@ -196,7 +196,7 @@ function resultScreen() {
     strokeWeight(3);
     fill(frogColor);
     textSize(25);
-    if (frogX > lilyPadX - 150 && frogX < lilyPadX + 150 && velocityY <= 2) {
+    if (frogX > lilyPadX - 150 && frogX < lilyPadX + 150 && velocityY <= 3.5) {
         text('You Won !', 260, 300);
         text('The frog landed safely on the lilypad', 110, 380);
         text('Press            to play again', 185, 415);
