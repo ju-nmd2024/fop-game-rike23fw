@@ -1,13 +1,13 @@
 // Variables
 let frogX = 660; // Initial position on X
 let frogY = 0; // Initial position on Y
-let frogColor = color(30, 130, 30);
-let lilyColor = color(30, 80, 30);
-let darkBlue = color(10, 150, 250);
-let lightBlue = color(120, 190, 255);
 const bottomLimit = 510; // Limit where the frog stops
 const lilyPadY = 480; // Fixed position for the lilypad
 let lilyPadX = 300;
+let frogColor;
+let lilyColor;
+let darkBlue;
+let lightBlue;
  
 // game logic variables
 let acceleration = 0.2;
@@ -16,6 +16,10 @@ let gameState = true;
 
 function setup() {
     createCanvas(700, 600);
+    frogColor = color(30, 120, 31);
+    lilyColor = color(30, 80, 30);
+    darkBlue = color(10, 150, 250);
+    lightBlue = color(120, 190, 255);
 }
 
 function draw() {
@@ -76,7 +80,7 @@ function gameScreen() {
     //https://p5js.org/reference/p5/keyIsDown/
     //Constrols to make the frog move
     if (keyIsDown(UP_ARROW)) {
-         velocityY -= 0.3; //reduces velocity by 0.3 making the landing easier
+         velocityY -= 0.4; //reduces velocity by 0.4 making the landing easier
     }
 
     if (keyIsDown(LEFT_ARROW)) {
@@ -90,7 +94,6 @@ function gameScreen() {
     drawFrog(frogX, frogY);
 
 }
-
 
 function mousePressed() {
     if (gameState === true) {
@@ -193,13 +196,13 @@ function resultScreen() {
     strokeWeight(3);
     fill(frogColor);
     textSize(25);
-    if (frogX > lilyPadX - 150 && frogX < lilyPadX + 150) {
+    if (frogX > lilyPadX - 150 && frogX < lilyPadX + 150 && velocityY <= 2) {
         text('You Won !', 260, 300);
         text('The frog landed safely on the lilypad', 110, 380);
         text('Press            to play again', 185, 415);
     } else {
         text('You Lost!', 280, 300);
-        text('The frog fell into the lake', 200, 380);
+        text('The frog fell into the lake or landed to fast', 85, 380);
         text('Press            to play again', 185, 415);
     }
 
